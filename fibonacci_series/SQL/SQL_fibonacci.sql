@@ -1,7 +1,7 @@
-SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
-SET QUOTED_IDENTIFIER ON;
-SET NOCOUNT ON;
-SET ANSI_NULLS ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+SET QUOTED_IDENTIFIER ON
+SET NOCOUNT ON
+SET ANSI_NULLS ON
 
 --Tested in Visual Studio Code using https://sqliteonline.com/
 -- 1) Select Demo Server: MS SQL
@@ -9,20 +9,20 @@ SET ANSI_NULLS ON;
 -- 3) Copy this query into the query area
 -- 3) Click "Run"
 
---change this value to the highest desired fib(n)
+--change the @nth value to the highest desired fib(n)
 -- Maximum without overflow for BIGINT is fib(92)
 DECLARE @nth INT = 92;
 DECLARE @zero BIGINT = 0;
 DECLARE @one BIGINT = 1;
 
---return fib(0) through the nth value
+--return fib(0) through the requested nth value
 WITH
    fibCTE(n, fib, priorFib)
    AS
    (
-      SELECT 0 as n, @ZERO as fib, @ZERO as priorFib
+      SELECT 0 AS n, @ZERO AS fib, @ZERO AS priorFib
       UNION
-         SELECT 1 as n, @ONE as fib, @ZERO as priorFib
+         SELECT 1 AS n, @ONE AS fib, @ZERO AS priorFib
       UNION ALL
          SELECT n + 1,
             fib + priorFib,
