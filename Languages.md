@@ -8,11 +8,13 @@ Hello there!!
 
 ## Code already developed in this programming language.
 
+- BASIC
 - Bash
 - C
 - C#
 - C++
 - Dart
+- Fortran
 - Go
 - Haskell
 - Java
@@ -21,12 +23,14 @@ Hello there!!
 - Lua
 - Matlab
 - Miranda
+- Octave
 - PHP
 - Powershell Script
 - Python
 - R
 - Ruby
 - Rust
+- SQL
 - Scala
 - Scheme
 - Typescript
