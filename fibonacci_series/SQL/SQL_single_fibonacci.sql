@@ -31,7 +31,7 @@ WITH
          WHERE n > 0 AND n < @nth
    )
 
-SELECT
+SELECT TOP 1
    n, fib
 FROM fibCTE
-ORDER BY n;
+ORDER BY n DESC;
