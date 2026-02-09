@@ -63,10 +63,16 @@ static void Fibonacci<T>(int n, bool recurse, bool timed) where T : INumber<T>
             Console.WriteLine($"{typeNamePadded}\t{fibOfN} ({stopWatch.ElapsedTicks} ticks)");
         }
         else
+        {
             if (recurse)
+            {
                 Console.WriteLine($"{typeNamePadded}\t{FibonacciRecurse<T>(n, typeMaxValue).Item1}");
+            }
             else
+            {
                 Console.WriteLine($"{typeNamePadded}\t{FibonacciProgressiveLoop<T>(n, typeMaxValue)}");
+            }
+        }
     }
     catch (OverflowException ex)
     {
@@ -80,14 +86,20 @@ static void Fibonacci<T>(int n, bool recurse, bool timed) where T : INumber<T>
 static (T, T) FibonacciRecurse<T>(int n, T typeMaxValue) where T : INumber<T>
 {
     if (n == 0)
+    {
         return (T.Zero, T.Zero);
+    }
     else if (n == 1)
+    {
         return (T.One, T.Zero);
+    }
     else
     {
         var (fibMinus1, fibMinus2) = FibonacciRecurse<T>(n - 1, typeMaxValue);
         if (fibMinus1 > (typeMaxValue - fibMinus2))
+        {
             throw new OverflowException($"Exceeded{(typeMaxValue is BigInteger ? " artificial" : string.Empty)} capacity of {typeMaxValue}, maximum that can be computed is Fib({n - 1}).");
+        }
         return (fibMinus1 + fibMinus2, fibMinus1);
     }
 }
@@ -98,16 +110,22 @@ static (T, T) FibonacciRecurse<T>(int n, T typeMaxValue) where T : INumber<T>
 static T FibonacciProgressiveLoop<T>(int n, T typeMaxValue) where T : INumber<T>
 {
     if (n == 0)
+    {
         return T.Zero;
+    }
     else if (n == 1)
+    {
         return T.One;
+    }
     else
     {
         T prior = T.Zero, current = T.One;
         for (int i = 2; i <= n; i++)
         {
             if (current > (typeMaxValue - prior))
+            {
                 throw new OverflowException($"Exceeded{(typeMaxValue is BigInteger ? " artificial" : string.Empty)} capacity of {typeMaxValue}, maximum that can be computed is Fib({i - 1}).");
+            }
             T temp = prior + current;
             prior = current;
             current = temp;
@@ -122,13 +140,15 @@ static T FibonacciProgressiveLoop<T>(int n, T typeMaxValue) where T : INumber<T>
 /// <typeparam name="T">Numeric type implementing INumber<></typeparam>
 static class MaxValueHelper<T> where T : INumber<T>
 {
-    private static T? TypeCompare { get; }
+    private static readonly T? TypeCompare = default;
     public static T GetMaxValue()
     {
         if (TypeCompare is BigInteger)
+        {
             // .NET 9 enforces a maximum length of BigInteger, which is that it can contain no more than (2^31) - 1 digits
             // Using an artifical max that will permit fib(94401)
             return (T)(object)BigInteger.Pow(new BigInteger(ulong.MaxValue), 1024);
+        }
         var maxValueField = typeof(T).GetField("MaxValue", BindingFlags.Public | BindingFlags.Static);
         var maxValueProperty = typeof(T).GetProperty("MaxValue", BindingFlags.Public | BindingFlags.Static);
         return (T)(
