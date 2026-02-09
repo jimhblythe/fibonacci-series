@@ -31,7 +31,9 @@ while (true)
     }
 
     if (recurse)
+    {
         Console.WriteLine("If it occurs, a System.StackOverflowException means the call stack ran out of memory due to an excessive number of nested method calls.");
+    }
 
     Fibonacci<sbyte>(n, recurse, timed);    //Int8
     Fibonacci<byte>(n, recurse, timed);     //UInt8
