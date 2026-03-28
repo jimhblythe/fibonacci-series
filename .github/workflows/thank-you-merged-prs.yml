@@ -1,0 +1,74 @@
+name: Thank You for Contributions
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (do not actually post comments)'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  thank-contributors:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Post thank-you comments on merged PRs
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const dryRun = '${{ github.event.inputs.dry_run }}' === 'true';
+            
+            // PRs that were merged into the codebase
+            const mergedPRs = [
+              { number: 177, contributor: 'jimhblythe',    contribution: 'C# Fibonacci with data type capacity demo' },
+              { number: 176, contributor: 'jimhblythe',    contribution: 'SQL Fibonacci implementations (T-SQL and SQLite)' },
+              { number: 175, contributor: 'DerekCorniello', contribution: 'OCaml Fibonacci implementations (iterative and recursive)' },
+              { number: 173, contributor: 'rlperez',        contribution: 'Clojure Fibonacci example' },
+              { number: 166, contributor: '422171',         contribution: 'Haskell and SML Fibonacci programs' },
+              { number: 158, contributor: 'Bindles',        contribution: 'Elixir and Ruby recursive Fibonacci implementations' },
+              { number: 156, contributor: 'satyam8932',     contribution: 'Fortran Fibonacci support' },
+              { number: 155, contributor: 'mohmmadAyesh',   contribution: 'Objective-C Fibonacci implementation' },
+              { number: 151, contributor: 'LassazVegaz',    contribution: 'Swift Fibonacci implementation' },
+              { number: 143, contributor: 'mdbailin',       contribution: 'iterative C Fibonacci implementation' },
+              { number: 136, contributor: 'alisa-odo',      contribution: 'Chef language Fibonacci implementation' },
+              { number: 135, contributor: 'alisa-odo',      contribution: 'Rust recursive Fibonacci implementation' },
+              { number: 134, contributor: 'mikkela',        contribution: 'fast Haskell Fibonacci implementation' },
+              { number: 124, contributor: 'DanielChuDC',    contribution: 'Julia Fibonacci implementations' },
+              { number: 100, contributor: 'duringhof',      contribution: 'Carbon language Fibonacci implementation' },
+              { number: 97,  contributor: 'akhil-maker',    contribution: 'Fortran Fibonacci series' },
+              { number: 90,  contributor: 'sec65',          contribution: 'NASM x64 Assembly Fibonacci implementation' },
+              { number: 69,  contributor: 'Madhurima-Ghosh', contribution: 'C++ recursive Fibonacci implementation' },
+              { number: 68,  contributor: 'Madhurima-Ghosh', contribution: 'C Fibonacci implementation' },
+              { number: 63,  contributor: 'casafurix',      contribution: 'JavaScript + HTML Fibonacci implementation' },
+            ];
+            
+            for (const pr of mergedPRs) {
+              const message = `🎉 Thank you so much for your contribution, @${pr.contributor}! 🙏\n\n` +
+                `Your **${pr.contribution}** has been accepted and merged into the repository. ` +
+                `Your name has also been added to [Contributors.md](https://github.com/fharookshaik/fibonacci-series/blob/main/Contributors.md).\n\n` +
+                `We really appreciate you taking the time to contribute to this project. ` +
+                `Happy coding! 💻✨`;
+              
+              if (dryRun) {
+                console.log(`[DRY RUN] Would post to PR #${pr.number}: ${message.substring(0, 80)}...`);
+              } else {
+                try {
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: pr.number,
+                    body: message,
+                  });
+                  console.log(`Posted thank-you comment on PR #${pr.number} (@${pr.contributor})`);
+                } catch (error) {
+                  console.error(`Failed to post on PR #${pr.number}: ${error.message}`);
+                }
+              }
+            }
+            
+            console.log(`Done! Processed ${mergedPRs.length} PRs.`);
