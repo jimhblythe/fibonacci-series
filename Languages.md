@@ -8,23 +8,29 @@ Hello there!!
 
 ## Code already developed in this programming language.
 
+- Assembly
 - BASIC
 - Bash
 - C
 - C#
 - C++
+- Carbon
+- Chef
 - Clojure
 - Dart
+- Elixir
 - Fortran
 - Go
 - Haskell
 - Java
 - Javascript
+- Julia
 - Kotlin
 - Lua
 - Matlab
 - Miranda
 - OCaml
+- Objective-C
 - Octave
 - PHP
 - Powershell Script
@@ -32,7 +38,9 @@ Hello there!!
 - R
 - Ruby
 - Rust
+- SML
 - SQL
 - Scala
 - Scheme
+- Swift
 - Typescript
