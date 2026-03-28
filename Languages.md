@@ -32,6 +32,7 @@ Hello there!!
 - R
 - Ruby
 - Rust
+- SQL
 - Scala
 - Scheme
 - Typescript
